@@ -156,6 +156,11 @@ class GameInitializer {
   float komiBigStdev;
   bool komiAuto;
 
+#if defined(PEDESTAL)
+  bool whiteFirst;
+  bool drawPedestal;
+#endif
+
   int numExtraBlackFixed;
   double noResultStdev;
   double drawRandRadius;
