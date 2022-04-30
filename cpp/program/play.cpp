@@ -540,9 +540,7 @@ void GameInitializer::createGameSharedUnsynchronized(
 #if defined(PEDESTAL)
     if (whiteFirst)
       pla = P_WHITE;
-    std::cout << "drawPedestal " << drawPedestal << ", xSize " << xSize << ", ySize " << ySize << "\n";
     if (drawPedestal && xSize == 19 && ySize == 19) {
-      std::cerr << "goes here\n";
       board.setStone(Location::getLoc(3, 3, xSize), C_BLACK);
       board.setStone(Location::getLoc(15, 15, xSize), C_BLACK);
       board.setStone(Location::getLoc(15, 3, xSize), C_WHITE);
