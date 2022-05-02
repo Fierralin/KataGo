@@ -149,6 +149,11 @@ void GameInitializer::initShared(ConfigParser& cfg, Logger& logger) {
   komiBigStdev = cfg.contains("komiBigStdev") ? cfg.getFloat("komiBigStdev",0.0f,60.0f) : 10.0f;
   komiAuto = cfg.contains("komiAuto") ? cfg.getBool("komiAuto") : false;
 
+#if defined(PEDESTAL)
+  whiteFirst = cfg.contains("whiteFirst") ? cfg.getBool("whiteFirst") : false;
+  drawPedestal = cfg.contains("drawPedestal") ? cfg.getBool("drawPedestal") : false;
+#endif
+
   forkCompensateKomiProb = cfg.contains("forkCompensateKomiProb") ? cfg.getDouble("forkCompensateKomiProb",0.0,1.0) : handicapCompensateKomiProb;
   sgfCompensateKomiProb = cfg.contains("sgfCompensateKomiProb") ? cfg.getDouble("sgfCompensateKomiProb",0.0,1.0) : forkCompensateKomiProb;
   komiAllowIntegerProb = cfg.contains("komiAllowIntegerProb") ? cfg.getDouble("komiAllowIntegerProb",0.0,1.0) : 1.0;
@@ -532,6 +537,16 @@ void GameInitializer::createGameSharedUnsynchronized(
     int ySize = allowedBSizes[ySizeIdx];
     board = Board(xSize,ySize);
     pla = P_BLACK;
+#if defined(PEDESTAL)
+    if (whiteFirst)
+      pla = P_WHITE;
+    if (drawPedestal && xSizeIdx == 19 && ySizeIdx == 19) {
+      board.setStone(Location::getLoc(4, 4, xSizeIdx), C_BLACK);
+      board.setStone(Location::getLoc(15, 15, xSizeIdx), C_BLACK);
+      board.setStone(Location::getLoc(15, 4, xSizeIdx), C_WHITE);
+      board.setStone(Location::getLoc(4, 15, xSizeIdx), C_WHITE);
+    }
+#endif
     hist.clear(board,pla,rules,0);
 
     extraBlackAndKomi = PlayUtils::chooseExtraBlackAndKomi(

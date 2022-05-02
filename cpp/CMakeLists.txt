@@ -367,6 +367,7 @@ endif()
 #------------------------------------------------------------------------------------
 
 # add_compile_definitions(NDEBUG)
+add_compile_definitions(PEDESTAL)
 
 if(MSVC)
   message(STATUS "Setting up build for MSVC.")

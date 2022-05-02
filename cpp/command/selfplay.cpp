@@ -238,6 +238,13 @@ int MainCmds::selfplay(const vector<string>& args) {
   //Check for unused config keys
   cfg.warnUnusedKeys(cerr,&logger);
 
+#if defined(PEDESTAL)
+  bool enable_pedestal = false;
+  if (cfg.contains("pedestal")) {
+    enable_pedestal = true;
+  }
+#endif
+
   //Shared across all game loop threads
   std::atomic<int64_t> numGamesStarted(0);
   ForkData* forkData = new ForkData();
