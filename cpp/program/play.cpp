@@ -479,6 +479,20 @@ void GameInitializer::createGameSharedUnsynchronized(
   if(startPosSample != NULL)
     posSample = startPosSample;
 
+#if defined(PEDESTAL)
+  if (drawPedestal) {
+    static Sgf::PositionSample pedestal_pos = {
+      {19, 19}, P_WHITE, {
+        {Location::getLoc(3, 3, 19), C_WHITE},
+        {Location::getLoc(3, 15, 19), C_BLACK},
+        {Location::getLoc(15, 15, 19), C_WHITE},
+        {Location::getLoc(15, 3, 19), C_BLACK},
+      }, 0, Board::NULL_LOC, 1
+    };
+    posSample = &pedestal_pos;
+  }
+#endif
+
   if(posSample == NULL) {
     if(startPosesProb > 0 && rand.nextBool(startPosesProb)) {
       assert(startPoses.size() > 0);
@@ -540,12 +554,14 @@ void GameInitializer::createGameSharedUnsynchronized(
 #if defined(PEDESTAL)
     if (whiteFirst)
       pla = P_WHITE;
+#if 0
     if (drawPedestal && xSize == 19 && ySize == 19) {
-      board.setStone(Location::getLoc(3, 3, xSize), C_BLACK);
-      board.setStone(Location::getLoc(15, 15, xSize), C_BLACK);
-      board.setStone(Location::getLoc(15, 3, xSize), C_WHITE);
-      board.setStone(Location::getLoc(3, 15, xSize), C_WHITE);
+      board.setStone(Location::getLoc(3, 3, xSize), C_WHITE);
+      board.setStone(Location::getLoc(15, 15, xSize), C_WHITE);
+      board.setStone(Location::getLoc(15, 3, xSize), C_BLACK);
+      board.setStone(Location::getLoc(3, 15, xSize), C_BLACK);
     }
+#endif
 #endif
     hist.clear(board,pla,rules,0);
 
